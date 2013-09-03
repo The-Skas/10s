@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+    // GLOBALS
+    var KEYCODE_ENTER = 13;   //usefull keycode
+    var KEYCODE_SPACE = 32;   //usefull keycode
+    var KEYCODE_UP = 38;    //usefull keycode
+    var KEYCODE_LEFT = 37;    //usefull keycode
+    var KEYCODE_RIGHT = 39;   //usefull keycode
+    var KEYCODE_SHIFT = 16;
+    var KEYCODE_W = 87;     //usefull keycode
+    var KEYCODE_A = 65;     //usefull keycode
+    var KEYCODE_D = 68;     //usefull keycode
+    var KEYCODE_S = 83;
+    var key_a = true;
+    var key_d = true;
+    var key_w = true;
+    var key_s = true;
+
+    var current_character = null;
+    var DEBUG_ME = false;
+    </script>
+    <script src="ContentManager.js">
+</script>
+    <script src="easeljs-0.6.1.min.js">
+</script>
+
+    <script src="Math.js"></script>
+    <script src="Monster.js"></script>
+    <script src="Skelaton.js"></script>
+    <script src="Button.js"></script>
+    <script src="Character.js"></script>
+    <script src="interactable/Interactable.js"></script>
+    <script src="interactable/Computer.js"></script>
+    <script src="interactable/Rocket.js"></script>
+    <script src="interactable/Launcher.js"></script>
+    <script src="Hacker.js"></script>
+    <script src="State.js"></script>
+    <script src="levels/Level.js"></script>
+    <script>
+    var hash_keydown = {}
+    var arr_keys = []
+    var b_key_release = false;
+
+    var gameState = null;
+    var arr_ent = []
+    var monster;
+    var txt;
+    var levelTick = 0;
+    var level_i = 0;
+    var levels = []
+    levels[0]=Level.prototype.level1;
+
+    //***************
+    // Keyboard Stuff
+    //***************
+    //*************************
+    // **********************
+        function text_stuff()
+        {
+          txt = new createjs.Text("");
+          txt.x = 100;
+          txt.y = 80;
+          txt.rotation = 20;
+          //txt.outline = true;
+          stage.addChild(txt);
+          txt = new createjs.Text("text on the canvas... 0!", "36px Courier", "#76EE00");
+          txt.x = canvas.width/10.0 * 4;
+          txt.y = 0;
+          txt.rotation = 1;
+          //txt.outline = true;
+          stage.addChild(txt);
+
+          // this shape will be the background for the text:
+          shape = new createjs.Shape();
+          shape.x = txt.x;
+          shape.y = txt.y;
+          shape.rotation = txt.rotation;
+          stage.addChildAt(shape,0);
+        }
+        function init()
+        {
+          canvas = document.getElementById("demoCanvas");
+          stage = new createjs.Stage(canvas);
+          screen_width = canvas.width;
+          screen_height = canvas.height;
+
+          contentManager = new ContentManager();
+          contentManager.SetDownloadCompleted(startGame);
+          contentManager.StartDownload();
+
+          init_listeners();
+          createjs.Ticker.addListener(window);
+          createjs.Ticker.setInterval(1000/80);
+          createjs.Ticker.setFPS(60)
+        }
+        function startGame()
+        {
+          levels[level_i]();
+        }
+
+        function tick() {
+          gameState();
+          stage.update();
+
+        }
+
+       function check_key(keyCode, bool)
+       {
+          if (keyCode == KEYCODE_A && (key_a == bool))
+          {
+            key_a = !key_a
+            // Forward
+          }
+         else if(keyCode == KEYCODE_D && (key_d == bool))
+          {
+            key_d = !key_d
+          }
+          else if(keyCode == KEYCODE_W && (key_w == bool))
+          {
+            key_w = !key_w
+          }
+          else if(keyCode == KEYCODE_S && (key_s == bool))
+          {
+            key_s = !key_s
+
+          }
+      }
+      function init_listeners() {
+        window.addEventListener('keydown', function (e) {
+          // check_key(e.keyCode, true);
+          // test
+          if(e.keyCode == KEYCODE_SPACE || e.keyCode == 8)e.preventDefault();
+          // Incase the elment doesnt exist;
+          if(hash_keydown[e.keyCode] != true)
+          {
+            hash_keydown[e.keyCode] = true;
+            arr_keys.push(e.keyCode)
+          }
+        }, false);
+
+        window.addEventListener('keyup', function (e) {
+           e.preventDefault();
+           hash_keydown[e.keyCode] = false;
+           var i=arr_keys.indexOf(e.keyCode);
+           arr_keys.splice(i, 1);
+        }, false);
+      }
+
+      window.onload = init;
+
+    </script>
+</head>
+<body  style="background-color: white;">
+    <canvas id="demoCanvas" width="500" height="300" style="display: block;margin-left: auto; margin-right: auto; border-style: solid;background-image:url('img/background1.png');">
+        alternate content
+    </canvas>
+</body>
+</html>A
