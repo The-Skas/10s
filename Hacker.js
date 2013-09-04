@@ -9,8 +9,8 @@
         this.type = "Hacker"
         this.name = this.id;
         this.speed *= 2.0;
-        this.scaleX = 2.0;
-        this.scaleY = 2.0;
+        this.scaleX = 1.0;
+        this.scaleY = 1.0;
         // used to do time stuff.
         this.mimic = false;
         // An array that stores an object
@@ -18,26 +18,39 @@
         this.mimic_input = [];
         this.state = State.prototype.Hacker_Default;
     }
-
+    // Call first
     Hacker.prototype = new Character();
     // Update
-    Hacker.prototype.update = function(){
-      if (this.input.length != undefined)
-      {
-        if(this.input[this.input.length-1] == 16)
-        {
-          this.state = State.prototype.Hacker_MimicInit;
-          current_character = new Hacker("player1", contentManager.imgHacker);
-          arr_ent.push(current_character);
-          stage.addChild(current_character);
-          this.input.pop();
-          hash_keydown = {};
-          arr_keys = [];
-          return;
-        }
-      }
-      this.state(this);
+    Hacker.prototype.arrHackers = [];
 
+    Hacker.prototype.update = function(){
+      try
+      {
+        if (this.input.length != undefined)
+        {
+          if(this.input[this.input.length-1] == 16)
+          {
+            if(levels[ind_lvl].lives > 0)
+            {
+              levels[ind_lvl].lives--;
+
+              stage.removeAllChildren();
+
+              this.state = State.prototype.Hacker_MimicInit;
+              Hacker.prototype.arrHackers.push(this);
+              this.input.pop();
+              arr_ent =[];
+              hash_keydown = {};
+              arr_keys = [];
+              levels[ind_lvl].level();
+              return;
+            }
+          }
+        }
+
+      this.state(this);
+      }
+      catch(e){};
     }
 
     Hacker.prototype.evalInput = function()
@@ -81,8 +94,9 @@
           this.JackedInInit(this, obj);
                           // Takes in an array of funcs
           this.arr_funcs = State.prototype.Hacker_Input_JackedIn;
+
           // Doesnt go  to hack again!
-          arr_keys = [];
+          // arr_keys = [];
           delete this.hack;
         }
       }
@@ -90,6 +104,17 @@
       {
         arr_ent.splice(this);
       }
-    }
+      if(obj instanceof Door &&
+        obj.currentAnimation == "opened")
+      {
+        debugger;
+       if(this.currentAnimation !=="warp"
+          && this.currentAnimation !=="end")
+       {
+        this.gotoAndPlay("warp");
+        this.state = function(){}
+       }
+      }
+  }
     window.Hacker = Hacker;
 }(window))

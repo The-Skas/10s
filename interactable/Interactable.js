@@ -11,7 +11,6 @@
   Interactable.prototype.BitmapAnimation_initialize = Interactable.prototype.initialize
 
   Interactable.prototype.initialize = function( name, img, width, height, anim_obj){
-    debugger;
     if(anim_obj == undefined)
       anim_obj = {idle: [0, 9, "idle"]};
     var localSpriteSheet = new createjs.SpriteSheet({

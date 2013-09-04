@@ -3,7 +3,7 @@ function ContentManager() {
     // have been downloaded
     var ondownloadcompleted;
     // Number of elements to download
-    var NUM_ELEMENTS_TO_DOWNLOAD = 6;
+    var NUM_ELEMENTS_TO_DOWNLOAD = 10;
 
     // setting the callback method
     this.SetDownloadCompleted = function (callbackMethod) {
@@ -18,6 +18,10 @@ function ContentManager() {
     this.imgMonitor = new Image();
     this.imgLauncher = new Image();
     this.imgRocket = new Image();
+    this.imgDoor = new Image();
+    this.imgSpawn = new Image();
+    this.imgIconHacker = new Image();
+    this.imgLayout = new Image();
     // the background can be created with 3 different layers
     // those 3 layers exist in 3 versions
     this.imgBackgroundLayers = new Array();
@@ -25,13 +29,17 @@ function ContentManager() {
 
     // public method to launch the download process
     this.StartDownload = function () {
-
+        // 10?
         SetDownloadParameters(this.imgMonsterB, "img/MonsterB.png", handleImageLoad, handleImageError);
-        SetDownloadParameters(this.imgHacker, "img/hacker.png", handleImageLoad, handleImageError);
+        SetDownloadParameters(this.imgHacker, "img/hacker_2.png", handleImageLoad, handleImageError);
         SetDownloadParameters(this.imgComputer, "img/computer.png", handleImageLoad, handleImageError);
         SetDownloadParameters(this.imgMonitor, "img/monitor.png", handleImageLoad, handleImageError);
         SetDownloadParameters(this.imgLauncher, "img/launcher.png", handleImageLoad, handleImageError);
         SetDownloadParameters(this.imgRocket, "img/rocket.png", handleImageLoad, handleImageError);
+        SetDownloadParameters(this.imgDoor, "img/door.png", handleImageLoad, handleImageError);
+        SetDownloadParameters(this.imgSpawn, "img/spawn.png", handleImageLoad, handleImageError);
+        SetDownloadParameters(this.imgIconHacker, "img/icon_hacker.png", handleImageLoad, handleImageError);
+        SetDownloadParameters(this.imgLayout, "img/layout.png", handleImageLoad, handleImageError);
 
     }
 

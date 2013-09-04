@@ -14,14 +14,16 @@
     var localSpriteSheet = new createjs.SpriteSheet({
       images: [imgCharacter], //image to use
                                                           //regx    regy wtf?
-      frames: {width: 16, height: 16, regX: 8, regY: 8},
+      frames: {width: 32, height: 32, regX: 16, regY: 16},
       animations: {
         left:[1,1, "left"],
         right:[2,2, "right"],
         top:[3,3, "top"],
         down:[0,0, "down"],
         idle:[0,0, "idle", 2],
-        dead:[4,22, false]
+        dead:[4,22, false],
+        warp:[23,44, "end"],
+        end:[44,44, false]
       }
     });
 
@@ -79,7 +81,6 @@
 
     if(dist < obj.hit_radius+this.hit_radius)
     {
-      console.log("hit");
       obj.was_hit_by(this);
       this.was_hit_by(obj);
     }
@@ -87,24 +88,26 @@
 
   Character.prototype.was_hit_by = function(obj){
     // console.log("hit by -> "+obj.name);
-  var char_ind, obj_ind;
-  if(obj instanceof Interactable)
-  {
-    char_ind = stage.getChildIndex(this);
-    obj_ind = stage.getChildIndex(obj);
+  // var char_ind, obj_ind;
+  // if(obj instanceof Interactable && !(obj instanceof Door))
+  // {
+  //   char_ind = stage.getChildIndex(this);
+  //   obj_ind = stage.getChildIndex(obj);
 
-    // Swaps Drawing Order on hit.
-    if(this.y < obj.y && char_ind > obj_ind)
-    {
-      stage.swapChildren(this, obj);
-    }
-    else if(this.y > obj.y && char_ind < obj_ind)
-    {
-      stage.swapChildren(this,obj);
-    }
-  }
+  //   // Swaps Drawing Order on hit.
+  //   if(this.y < obj.y && char_ind > obj_ind)
+  //   {
+  //     console.log("SWAPZ");
+  //     stage.swapChildren(this, obj);
+  //   }
+  //   else if(this.y > obj.y && char_ind < obj_ind)
+  //   {
+  //     console.log("swapz");
+  //     stage.swapChildren(this,obj);
+  //   }
+  // }
 
-  if(obj instanceof Character == false)
+  if(obj instanceof Character == false && obj instanceof Door == false)
     {
       this.x = this.prevX;
       this.y = this.prevY;

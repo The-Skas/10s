@@ -10,8 +10,7 @@
     _this.computer = obj;
     _this.computer.questions =[];
     _this.computer.answers = {};
-    _this.computer.str_args = "";
-    _this.computer.ticks = 0;
+    _this.str_args = "";
     for(var i = 0; i < 5; i++)
     {
       _this.computer.questions[i] =""
@@ -30,23 +29,21 @@
       // _this.questions[i] = evv
     }
     var container=new createjs.Container();
-    container.name = "monitor"
+    container.name = "monitor"+_this.id;
     stage.addChild(container);
 
     var temp = new createjs.Bitmap(contentManager.imgMonitor);
     container.addChild(temp);
 
-    var string = _this.computer.questions[_this.computer.questions.length-1] + "?\n"
-    var temp = new createjs.Text(string, "20px Courier", "#ff7700");
-    temp.name = "text"
-    temp.x = 87;
-    temp.y = 48;
-    container.addChild(temp);
 
-    _this.computer.txt = temp;
+
     if(_this !== current_character)
     {
       container.visible = false;
+    }
+    else
+    {
+      container.addChild(_this.computer.txt);
     }
     // Populate questions
   }
@@ -59,17 +56,14 @@
     if(_this.computer.ticks > 50)
     {
       _this.computer.cracked = true;
+      _this.computer.txt.text = "BUFFER OVERFLOW!"
     }
     console.log(_this.computer.ticks);
     if(input == 27)
     {
       _this.arr_funcs=State.prototype.Hacker_Input_Default
-      var child = stage.getChildByName("monitor");
-      while(child !== null)
-      {
-        stage.removeChild(child);
-        child = stage.getChildByName("monitor");
-      }
+      var child = stage.getChildByName("monitor"+_this.id);
+      stage.removeChild(child);
     }
     else if(input == KEYCODE_ENTER)
     {
@@ -77,14 +71,13 @@
       // remove Enter Key
       _this.input.pop();
       var temp_answer = _this.computer.answers[_this.computer.questions.length-1];
-      debugger;
-      if(temp_answer == _this.computer.str_args)
+      if(temp_answer == _this.str_args)
       {
         console.log("YOU ARE CORRECTO!");
         _this.computer.questions.pop();
       }
       _this.computer.txt.text += "\n"+_this.computer.questions[_this.computer.questions.length-1]+"\n";
-      _this.computer.str_args ="";
+      _this.str_args ="";
       console.log("test")
     }
     else
@@ -93,8 +86,8 @@
       // Not only is it hefty, but its not usable. I shouldve linked
       // the too.. imagining in how it works, as if it were real... acctually
       // helps...
-      _this.computer.str_args +=(String.fromCharCode(_this.input.pop()));
-      _this.computer.txt.text += _this.computer.str_args[_this.computer.str_args.length-1];
+      _this.str_args +=(String.fromCharCode(_this.input.pop()));
+      _this.computer.txt.text += _this.str_args[_this.str_args.length-1];
 
       if(_this.computer.txt.text.length % 28 == 0)
       {
@@ -173,17 +166,10 @@
   State.prototype.Hacker_MimicInit = function(_this)
   {
     _this.index_mimic = 0;
-    debugger;
     _this.state = State.prototype.Hacker_Mimic;
-    _this.x = 0;
-    _this.y = 0;
-    _this.prevX = 0;
-    _this.prevY = 0;
-    debugger;
   }
   State.prototype.Hacker_Mimic = function(_this)
   {
-    debugger;
 
     _this.hack = false;
     _this.temp_arr = _this.arr_funcs.slice();
@@ -191,7 +177,6 @@
     _this.aY = 0;
     _this.prevX = _this.x;
     _this.prevY = _this.y;
-    debugger;
     var i = _this.index_mimic;
     _this.input = _this.mimic_input[i] ||
       _this.mimic_input[_this.mimic_input.length-1];
@@ -221,13 +206,13 @@
   {
 
     _this.hack = false;
-    _this.temp_arr = _this.arr_funcs.slice();
+    _this.temp_arr = _this.arr_funcs.slice(0);
     _this.aX = 0;
     _this.aY = 0;
     _this.prevX = _this.x;
     _this.prevY = _this.y;
 
-    _this.mimic_input.push(_this.input.slice());
+    _this.mimic_input.push(_this.input.slice(0));
     _this.evalInput();
     // I can call any function from another as long as I pass.. its values.
 
@@ -245,15 +230,24 @@
  // End Hacker States
  //*****************
  // stage.tick() states.
-   State.prototype.Game_Default = function()
-   {
-    var time = createjs.Ticker.getTime()-levelTick;
-    var ticks = (10-(time)/1000).toFixed(2);
-      if (ticks < 0) ticks = "Times up.";
+    State.prototype.Game_Default = function()
+    {
+      debugger;
+      var time = createjs.Ticker.getTime()-levelTick;
+      var ticks = (10-(time)/1000).toFixed(2);
       txt.text = ticks;
+        if (ticks <= 0)
+        {
+          ticks = "Times up.";
+          txt.text = "0.00"
+          stage.update();
+          gameState = State.prototype.TimesUpInit;
+        }
+
       current_character.input = arr_keys;
       for(var i=0; i< arr_ent.length; i++)
       {
+        Level.prototype.checkBounds(arr_ent[i]);
         arr_ent[i].update();
         for(var j = 1+i; j < arr_ent.length; j++)
         {
@@ -263,6 +257,44 @@
     }
     State.prototype.Game_Title = function()
     {
+
+    }
+    State.prototype.Level_End = function()
+    {
+
+    }
+    State.prototype.TimesUp = function()
+    {
+
+    }
+    State.prototype.TimesUpInit = function()
+    {
+      var arr = stage.children;
+      for(var i = 0; i < arr.length; i++)
+      {
+        arr[i].paused = true;
+      }
+      var overlay = new createjs.Bitmap(contentManager.imgLayout)
+      overlay.alpha = 0.5;
+      stage.addChild(overlay);
+
+      var temp_txt = new createjs.Text("10.00", "36px Courier", "#76EE00");
+      temp_txt.text = "Your Time is up.";
+
+      temp_txt.y = canvas.height/2 - temp_txt.getMeasuredLineHeight();
+      temp_txt.x = canvas.width/2;
+      temp_txt.textAlign ="center";
+      stage.addChild(temp_txt);
+
+      var temp_txt_hint =new createjs.Text("10.00", "14px Courier", "#76EE00");
+      temp_txt_hint.text = "'R' to restart \n\n'Space': action button.\n\n 'SHIFT' to shift backwards in time."
+      temp_txt_hint.textAlign = "center";
+      temp_txt_hint.x = canvas.width/2;
+      temp_txt_hint.y = canvas.height/2+20;
+
+      stage.addChild(temp_txt_hint);
+
+      gameState = State.prototype.TimesUp;
 
     }
     // State.prototype.Game_ComputerScreen = function()
