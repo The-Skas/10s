@@ -50,7 +50,7 @@
     var monster;
     var txt;
     var levelTick = 0;
-    var ind_lvl = 0;
+    var ind_lvl = 3;
     var levels = [];
     levels[0]=Level.prototype.level;
 
@@ -110,6 +110,24 @@
             // restart stuff
             levels[ind_lvl].reset();
             arr_keys.pop();
+          }
+          else if(arr_keys[arr_keys.length-1] == 16)
+          {
+            if(levels[ind_lvl].lives > 0)
+            {
+              levels[ind_lvl].lives--;
+
+              stage.removeAllChildren();
+
+              current_character.state = State.prototype.Hacker_MimicInit;
+              Hacker.prototype.arrHackers.push(current_character);
+              arr_keys.pop();
+              arr_ent =[];
+              hash_keydown = {};
+              arr_keys = [];
+              levels[ind_lvl].level();
+              return;
+            }
           }
           gameState();
           stage.update();

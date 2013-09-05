@@ -19,7 +19,6 @@
 
     if(comps_cracked >= this.computers.length && this.door.open != true)
     {
-      debugger;
       this.door.openDoor();
     }
   }

@@ -2,7 +2,6 @@
     var Hacker = function(monsterName, imgMonster) {
         this.initialize(monsterName, imgMonster);
         // Creates a clone of funcs
-        debugger;
         this.arr_funcs = State.prototype.Hacker_Input_Default;
         // define our own type of input.
         // init object variables.
@@ -15,6 +14,7 @@
         this.mimic = false;
         // An array that stores an object
         // of type arr;
+        this.dead = false;
         this.mimic_input = [];
         this.state = State.prototype.Hacker_Default;
     }
@@ -28,24 +28,24 @@
       {
         if (this.input.length != undefined)
         {
-          if(this.input[this.input.length-1] == 16)
-          {
-            if(levels[ind_lvl].lives > 0)
-            {
-              levels[ind_lvl].lives--;
+          // if(this.input[this.input.length-1] == 16)
+          // {
+          //   if(levels[ind_lvl].lives > 0)
+          //   {
+          //     levels[ind_lvl].lives--;
 
-              stage.removeAllChildren();
+          //     stage.removeAllChildren();
 
-              this.state = State.prototype.Hacker_MimicInit;
-              Hacker.prototype.arrHackers.push(this);
-              this.input.pop();
-              arr_ent =[];
-              hash_keydown = {};
-              arr_keys = [];
-              levels[ind_lvl].level();
-              return;
-            }
-          }
+          //     this.state = State.prototype.Hacker_MimicInit;
+          //     Hacker.prototype.arrHackers.push(this);
+          //     this.input.pop();
+          //     arr_ent =[];
+          //     hash_keydown = {};
+          //     arr_keys = [];
+          //     levels[ind_lvl].level();
+          //     return;
+          //   }
+          // }
         }
 
       this.state(this);
@@ -100,14 +100,19 @@
           delete this.hack;
         }
       }
-      if(obj instanceof Rocket)
+      if(obj instanceof Rocket
+        && this.dead == false
+        && this.currentAnimation !=="warp"
+        && this.currentAnimation !=="end")
       {
-        arr_ent.splice(this);
+        this.dead = true;
+        this.gotoAndPlay("dead");
+        var t_ind = arr_ent.indexOf(this);
+        arr_ent.splice(t_ind,1);
       }
       if(obj instanceof Door &&
         obj.currentAnimation == "opened")
       {
-        debugger;
        if(this.currentAnimation !=="warp"
           && this.currentAnimation !=="end")
        {

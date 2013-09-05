@@ -1,8 +1,11 @@
 (function (window)
 {
-  var Door = function(name, img, height, width)
+  var Door = function(temp_expression)
   {
-    debugger;
+    if(temp_expression !== undefined)
+    {
+      this.temp_expression = temp_expression;
+    }
     this.height = 64;
     this.width = 64;
     this.img = contentManager.imgDoor;
@@ -34,7 +37,11 @@
   }
 
   Door.prototype.update = function(){
-    return 0;
+    if(eval(this.temp_expression))
+    {
+      debugger;
+      this.openDoor();
+    }
   }
   // Door.prototype.check_hit_radius = function(obj)
   // {
@@ -46,9 +53,11 @@
   // }
   Door.prototype.openDoor = function()
   {
-    debugger;
-    this.open = true;
-    this.gotoAndPlay("open");
+    if(this.open == false)
+    {
+      this.open = true;
+      this.gotoAndPlay("open");
+    }
   };
   window.Door = Door;
 }(window))

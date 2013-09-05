@@ -1,27 +1,26 @@
 (function (window)
 {
-  var Rocket = function(name, img, height, width)
+  var Rocket = function(x,y,target)
   {
     this.img = contentManager.imgRocket;
-    debugger;
     // Class vars
     this.name = "rocket"
     this.height = 16;
     this.width = 16;
     this.anim_obj = {idle: [0, 0, "idle"]}
-    this.target = current_character;
     this.vX = 0;
     this.vY = 0;
-    this.aX = 0;
-    this.aY = 0;
-    this.max_speed = 0.1;
+    this.acc=0.05;
+    this.max_speed = 10;
     //
     // init stuff;
     this.initialize(this.name, this.img, this.height, this.width, this.anim_obj);
 
-    this.y = this.x = 500;
+    this.target = target;
+    this.x = x;
+    this.y = y;
     this.hit_radius = 5;
-    this.target = current_character;
+
     arr_ent.push(this);
   }
 
@@ -29,13 +28,18 @@
 
   Rocket.prototype.update = function()
   {
-    this.target = current_character;
-    this.calculateAngle();
-
+    if(this.target !== null &&
+      this.target.dead == false)
+    {
+      this.calculateAngle();
+    }
+    this.vX += this.acc;
+    this.vY += this.acc;
+    this.vX = Math.min(this.max_speed, this.vX);
+    this.vY = Math.min(this.max_speed, this.vY);
     var radians = Math.degToRad(this.rotation);
-    debugger;
-    this.x += 2 * Math.cos(radians);
-    this.y += 2 * Math.sin(radians);
+    this.x += this.vX * Math.cos(radians);
+    this.y += this.vY * Math.sin(radians);
   }
   Rocket.prototype.calculateAngle = function()
   {
@@ -47,7 +51,6 @@
     this.rotation = Math.toPosAngle(this.rotation);
 
     var diff = posAngleDeg - this.rotation;
-    debugger;
     if(diff > 180)
     {
       diff = diff - 360;
@@ -62,6 +65,16 @@
     // I could be adding negative numbers so incase.
     // I use it else where.. it would be annoying
     this.rotation += sign*Math.min(Math.abs(diff),10);
+  }
+  Rocket.prototype.was_hit_by = function(obj)
+  {
+    if (obj instanceof Hacker)
+    {
+      debugger;
+      stage.removeChild(this);
+      var t_ind = arr_ent.indexOf(this);
+      arr_ent.splice(t_ind,1);
+    }
   }
   window.Rocket = Rocket;
 }(window))

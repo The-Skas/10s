@@ -7,7 +7,9 @@
   // Hacker Function States
   Hacker.prototype.JackedInInit = function(_this,obj)
   {
+    // _this.input.pop();
     _this.computer = obj;
+    _this.computer.hackers.push(_this);
     _this.computer.questions =[];
     _this.computer.answers = {};
     _this.str_args = "";
@@ -33,9 +35,10 @@
     stage.addChild(container);
 
     var temp = new createjs.Bitmap(contentManager.imgMonitor);
+    temp.alpha = 0.5;
     container.addChild(temp);
 
-
+    _this.computer.txt.text="Hacking...\n"
 
     if(_this !== current_character)
     {
@@ -52,18 +55,12 @@
   // gives me greater range in manipulating inputs.
   Hacker.prototype.JackedIn = function(input, _this)
   {// esc
-    _this.computer.ticks++;
-    if(_this.computer.ticks > 50)
-    {
-      _this.computer.cracked = true;
-      _this.computer.txt.text = "BUFFER OVERFLOW!"
-    }
-    console.log(_this.computer.ticks);
-    if(input == 27)
+    if(input == KEYCODE_ENTER)
     {
       _this.arr_funcs=State.prototype.Hacker_Input_Default
       var child = stage.getChildByName("monitor"+_this.id);
       stage.removeChild(child);
+      Hacker.prototype.JackedInExit(_this);
     }
     else if(input == KEYCODE_ENTER)
     {
@@ -86,9 +83,9 @@
       // Not only is it hefty, but its not usable. I shouldve linked
       // the too.. imagining in how it works, as if it were real... acctually
       // helps...
-      _this.str_args +=(String.fromCharCode(_this.input.pop()));
-      _this.computer.txt.text += _this.str_args[_this.str_args.length-1];
-
+      // _this.str_args +=(String.fromCharCode(_this.input[_this.input.length-1]));
+      // _this.computer.txt.text += _this.str_args[_this.str_args.length-1];
+      _this.computer.txt.text = "Hacking...\n"+Math.round(_this.computer.ticks/_this.computer.max_ticks*100)+"%";
       if(_this.computer.txt.text.length % 28 == 0)
       {
         _this.computer.txt.text += "\n"
@@ -99,10 +96,22 @@
         _this.computer.txt.text ="";
       }
     }
+    _this.computer.ticks++;
+    if(_this.computer.ticks > _this.computer.max_ticks)
+    {
+      _this.computer.cracked = true;
+      _this.computer.txt.text = "System Hacked."
+    }
+    var ind=_this.temp_arr.indexOf(_this.JackedIn);
+    _this.temp_arr.splice(ind, 1);
   }
   Hacker.prototype.JackedInExit = function(_this)
   {
+
+    var index = _this.computer.hackers.indexOf(_this);
+    _this.computer.hackers.splice(index,1);
     delete _this.computer;
+
   }
   //*****************
   // Default State
@@ -232,7 +241,6 @@
  // stage.tick() states.
     State.prototype.Game_Default = function()
     {
-      debugger;
       var time = createjs.Ticker.getTime()-levelTick;
       var ticks = (10-(time)/1000).toFixed(2);
       txt.text = ticks;

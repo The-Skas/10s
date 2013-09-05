@@ -34,8 +34,8 @@
     arr_ent.push(player_h);
 
     current_character = player_h;
+
     var arr_hackers = Hacker.prototype.arrHackers;
-    debugger;
     // initializes clones;
     for(var i = 0; i < arr_hackers.length; i++)
     {
@@ -43,6 +43,8 @@
       arr_hackers[i].y = pSpawnY;
       arr_hackers[i].prevX = pSpawnX;
       arr_hackers[i].prevY = pSpawnY;
+      arr_hackers[i].dead = false;
+      arr_hackers[i].gotoAndStop("down");
       // state is a func;
       arr_hackers[i].arr_funcs = State.prototype.Hacker_Input_Default;
       arr_hackers[i].state = State.prototype.Hacker_MimicInit;
@@ -56,6 +58,7 @@
     arr_ent =[];
     stage.removeAllChildren();
     hash_keydown ={};
+    arr_keys = [];
     this.levelInit();
     this.level();
   }
