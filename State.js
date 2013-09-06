@@ -295,6 +295,26 @@
         createjs.Sound.play("main");
       }
     }
+    State.prototype.Game_OverInit = function()
+    {
+      var g = new createjs.Graphics();
+      g.beginFill(createjs.Graphics.getRGB(0,0,0));
+      g.drawRect(0,0,500,500);
+      stage.addChild(new createjs.Shape(g));
+
+      var temp_txt = new createjs.Text("10.00", "36px Courier", "#76EE00");
+      temp_txt.text = "GAME OVER.";
+
+      temp_txt.y = canvas.height/2 - temp_txt.getMeasuredLineHeight();
+      temp_txt.x = canvas.width/2;
+      temp_txt.textAlign ="center";
+      stage.addChild(temp_txt);
+      gameState = State.prototype.Game_Over;
+    }
+    State.prototype.Game_Over = function()
+    {
+
+    }
     State.prototype.Level_End = function()
     {
 

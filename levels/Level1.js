@@ -334,5 +334,15 @@ function initLevels()
         levelTick = createjs.Ticker.getTime();
         gameState = State.prototype.Game_Default
     }
-
+    levels[6] = new Level();
+    levels[6].levelInit = function()
+        {
+            levels[6].lives = 0;
+            levels[6].hint = "(:_:)"
+            Hacker.prototype.arrHackers = [];
+        }
+    levels[6].level = function()
+    {
+        gameState = State.prototype.Game_OverInit;
+    }
 }
