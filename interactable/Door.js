@@ -29,8 +29,9 @@
         if(obj.currentAnimation == "end")
         {
           // resets ents, input, and stage.
+        arr_keys = [];
         ind_lvl++;
-        levels[ind_lvl].reset();
+        gameState = State.prototype.Level_EndInit;
         }
       }
     }

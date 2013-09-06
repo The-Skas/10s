@@ -145,14 +145,14 @@ function initLevels()
         levelTick = createjs.Ticker.getTime();
         gameState = State.prototype.Game_Default
     }
-    levels[4] = new Level();
-    levels[4].levelInit = function()
+    levels[5] = new Level();
+    levels[5].levelInit = function()
     {
-        levels[4].lives = 3;
-        levels[4].hint = "Dead People can be useful."
+        levels[5].lives = 3;
+        levels[5].hint = "Two hackers are faster then one hacker."
         Hacker.prototype.arrHackers = [];
     }
-    levels[4].level = function()
+    levels[5].level = function()
     {
         window.lvl_width = 500;
         window.lvl_height = 300;
@@ -204,14 +204,14 @@ function initLevels()
         levelTick = createjs.Ticker.getTime();
         gameState = State.prototype.Game_Default
     }
-    levels[3] = new Level();
-    levels[3].levelInit = function()
+    levels[4] = new Level();
+    levels[4].levelInit = function()
     {
-        levels[3].lives = 3;
-        levels[3].hint = "Yeah..."
+        levels[4].lives = 3;
+        levels[4].hint = "Yeah..."
         Hacker.prototype.arrHackers = [];
     }
-    levels[3].level = function()
+    levels[4].level = function()
     {
         window.lvl_width = 500;
         window.lvl_height = 300;
@@ -264,14 +264,14 @@ function initLevels()
         levelTick = createjs.Ticker.getTime();
         gameState = State.prototype.Game_Default
     }
-    levels[5] = new Level();
-    levels[5].levelInit = function()
+    levels[3] = new Level();
+    levels[3].levelInit = function()
     {
-        levels[5].lives = 3;
-        levels[5].hint = "Need to Hack Multiple Computers.... But may need to coordinate it..."
+        levels[3].lives = 3;
+        levels[3].hint = "Need to Hack Multiple Computers.... But may need to coordinate it..."
         Hacker.prototype.arrHackers = [];
     }
-    levels[5].level = function()
+    levels[3].level = function()
     {
         window.lvl_width = 500;
         window.lvl_height = 300;
