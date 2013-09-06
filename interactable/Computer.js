@@ -1,8 +1,14 @@
 (function (window)
 {
-  var Computer = function(max_ticks,launchers)
+  var Computer = function(max_ticks,launchers, lockOut_flag)
   {
-    var anim_obj ={idle: [0, 9, "idle"]};
+    // Lockout for multiple timed computers.
+    this.lockOut_flag = typeof lockOut_flag !== 'undefined' ? true : false;
+    this.lockOut = false;
+    this.lockOutInterval = 800;
+    this.lastTime;
+
+    var anim_obj ={idle: [0, 8, "idle"], lock:[9,9,"lock"], hacked:[10,10,"hacked"]};
     this.name = "computer"; this.img=contentManager.imgComputer;
     this.height = 64; this.width = 64;
     this.initialize(this.name, this.img, this.height, this.width, anim_obj);
@@ -47,6 +53,29 @@
     //     }
     //   }
     // }
+    if(this.lockOut_flag)
+    {
+      if(this.cracked)
+      {
+        if(this.lastTime + this.lockOutInterval < g_time)
+        {
+          this.txt.text = "SECURITY BREACH: \n LOCKING COMPUTER.";
+          this.lockOut = true;
+          this.gotoAndStop("lock");
+          this.alpha = 0.4;
+          this.paused = true;
+        }
+      }
+    }
+
+    if(this.lockOut)
+    {
+      this.gotoAndStop("lock");
+    }
+    else if(this.cracked)
+    {
+      this.gotoAndStop("hacked");
+    }
   }
   Computer.prototype.check_hit_radius = function(obj){
     Interactable.prototype.check_hit_radius.call(this, obj);

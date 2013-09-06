@@ -1,0 +1,19 @@
+html{
+  font-family: 'Press Start 2P', cursive;
+  color: #76EE00;
+}
+.title{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
+}
+
+.instruc{
+  font-size: 14px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+  padding-top: 10px;
+}

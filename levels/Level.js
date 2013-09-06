@@ -18,9 +18,21 @@
     txt.x = icon.x+50;
     txt.y = icon.y-10;
         // add
+    var square = new createjs.Shape();
+    square.graphics.setStrokeStyle(8).beginStroke("green").drawRect(0,0,140,90)
+    square.x = canvas.width-150;
+    square.y = canvas.height-95;
 
+    var hint = new createjs.Text(levels[ind_lvl].hint, "14px Courier", "#76EE00")
+    hint.lineWidth =140;
+    hint.x = square.x+4;
+    hint.y = canvas.height-95;
+    debugger;
+    // circle.graphics.beginFill("red").drawCircle(0, 0, 5);
     container.addChild(icon);
+    container.addChild(square);
     container.addChild(txt);
+    container.addChild(hint);
   }
   Level.prototype.initPlayer= function(pSpawnX,pSpawnY){
     var spawn = new createjs.Bitmap(contentManager.imgSpawn);
@@ -57,8 +69,8 @@
   Level.prototype.reset = function(){
     arr_ent =[];
     stage.removeAllChildren();
-    hash_keydown ={};
-    arr_keys = [];
+    // hash_keydown ={};
+    // arr_keys = [];
     this.levelInit();
     this.level();
   }
@@ -112,7 +124,7 @@
     current_character = player_h;
 
     console.log("Game has started.!");
-    arr_ent.push(computer);
+
     stage.setChildIndex(computer, 1);
 
 
@@ -132,7 +144,7 @@
   {
     if(obj.x > window.lvl_width || obj.x < 0
     || obj.y > window.lvl_height|| obj.y < 0)
-      obj.was_hit_by(Interactable);
+      obj.was_hit_by("Bounds");
   }
   window.Level = Level;
 }(window))

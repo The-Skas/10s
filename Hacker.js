@@ -83,7 +83,7 @@
     Hacker.prototype.was_hit_by = function(obj)
     {
       Character.prototype.was_hit_by.call(this, obj);
-      if(obj.name == "computer")
+      if(obj instanceof Computer)
       {
         //change game state to bring up a computer?
 
@@ -107,8 +107,9 @@
       {
         this.dead = true;
         this.gotoAndPlay("dead");
-        var t_ind = arr_ent.indexOf(this);
-        arr_ent.splice(t_ind,1);
+        // var t_ind = arr_ent.indexOf(this);
+        // arr_ent.splice(t_ind,1);
+        this.state = null;
       }
       if(obj instanceof Door &&
         obj.currentAnimation == "opened")

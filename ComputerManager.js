@@ -11,7 +11,7 @@
     var comps_cracked = 0;
     for(var i = 0; i < this.computers.length; i++)
     {
-      if(this.computers[i].cracked)
+      if(this.computers[i].cracked && this.computers[i].lockOut == false)
       {
         comps_cracked++;
       }

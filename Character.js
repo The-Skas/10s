@@ -107,7 +107,8 @@
   //   }
   // }
 
-  if(obj instanceof Character == false && obj instanceof Door == false)
+  if(obj instanceof Character == false && obj instanceof Door == false
+    && obj instanceof Rocket == false)
     {
       this.x = this.prevX;
       this.y = this.prevY;

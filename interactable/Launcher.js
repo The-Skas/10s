@@ -10,7 +10,7 @@
     this.initialize(this.name, this.img, this.height, this.width, anim_obj);
     this.lastTime=createjs.Ticker.getTime();
 
-    this.interval = 100000;
+    this.interval = 1000;
     this.target = null;
   }
 

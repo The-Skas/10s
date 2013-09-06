@@ -21,11 +21,13 @@
     var current_character = null;
     var DEBUG_ME = false;
     </script>
-    <script src="ContentManager.js">
-</script>
-    <script src="easeljs-0.6.1.min.js">
-    </script>
 
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+    <script src="easeljs-0.6.1.min.js"></script>
+    <script src="http://code.createjs.com/soundjs-0.4.0.min.js"></script>
+
+    <script src="ContentManager.js"></script>
     <script src="Math.js"></script>
     <script src="Button.js"></script>
     <script src="Character.js"></script>
@@ -33,6 +35,7 @@
     <script src="interactable/Computer.js"></script>
     <script src="interactable/Rocket.js"></script>
     <script src="interactable/Launcher.js"></script>
+    <script src="interactable/LauncherClone.js"></script>
     <script src="interactable/Door.js"></script>
     <script src="ComputerManager.js"></script>
     <script src="Hacker.js"></script>
@@ -50,7 +53,7 @@
     var monster;
     var txt;
     var levelTick = 0;
-    var ind_lvl = 3;
+    var ind_lvl = 0;
     var levels = [];
     levels[0]=Level.prototype.level;
 
@@ -59,6 +62,12 @@
     //***************
     //*************************
     // **********************
+
+        function handleSoundLoaded(e)
+        {
+          createjs.Sound.stop();
+          createjs.Sound.play(e.src);
+        }
         function text_stuff()
         {
           txt = new createjs.Text("");
@@ -92,13 +101,19 @@
           createjs.Ticker.addListener(window);
           createjs.Ticker.setInterval(1000/80);
           createjs.Ticker.setFPS(60)
+
+          createjs.Sound.addEventListener("fileload", handleSoundLoaded);
+          // createjs.Sound.registerSound({id:"main", src:"audio/Danger-07-46.mp3"});
+          createjs.Sound.registerManifest([
+          {id:"main", src:"audio/Danger-07-46.mp3"}
+          ]);
         }
         function startGame()
         {
           initLevels();
           debugger;
           // level overlay?
-          levels[ind_lvl].reset();
+          gameState = State.prototype.Game_TitleInit;
         }
 
         function tick() {
@@ -129,6 +144,7 @@
               return;
             }
           }
+          g_time = createjs.Ticker.getTime();
           gameState();
           stage.update();
 
@@ -180,9 +196,30 @@
 
     </script>
 </head>
-<body  style="background-color: white;">
+<body  style="background-color: #0A0A0A;">
+    <img src="img/title_large.png" class="title">
     <canvas id="demoCanvas" width="500" height="400" style="display: block;margin-left: auto; margin-right: auto; border-style: solid;background-image:url('img/background1.png'); background-repeat: no-repeat; background-color: black;">
         alternate content
     </canvas>
+    <div class="instruc">
+      You have 10 seconds to solve each puzzle.
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      Controls:
+      <ul>
+        <li>WASD:<br> Movement Keys.</li><br>
+        <li>SPACE+(Any Direction Key): <br>Next to a computer, this will interact with the computer.</li>
+        <li><br>ENTER KEY: <br>This will exit a computer.<li>
+        <li><br>SHIFT KEY: <br>Time Warp. This will warp back in time, creating an instance of your previous self (All actions will be mimiced).
+        <li><br>R KEY: <br>Restart Level.
+      </ul>
+      ================================
+      Icons:<br>
+      <img src="img/icon_hacker.png">N   <---- This icon will have a number next to it. It will display the number of 'Time Warps' you have left.
+    </div>
 </body>
-</html>A
+</html>

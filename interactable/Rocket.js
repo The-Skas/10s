@@ -1,6 +1,6 @@
 (function (window)
 {
-  var Rocket = function(x,y,target)
+  var Rocket = function(x,y,target, max_speed )
   {
     this.img = contentManager.imgRocket;
     // Class vars
@@ -11,16 +11,15 @@
     this.vX = 0;
     this.vY = 0;
     this.acc=0.05;
-    this.max_speed = 10;
+    this.max_speed = typeof max_speed !== 'undefined' ? max_speed : 10;
     //
     // init stuff;
     this.initialize(this.name, this.img, this.height, this.width, this.anim_obj);
-
+    this.rotation += 90
     this.target = target;
     this.x = x;
     this.y = y;
     this.hit_radius = 5;
-
     arr_ent.push(this);
   }
 
@@ -28,10 +27,12 @@
 
   Rocket.prototype.update = function()
   {
-    if(this.target !== null &&
-      this.target.dead == false)
+    // the !== is used if i specifically am
+    // using null or specifically undefined.
+    if(this.target != null)
     {
-      this.calculateAngle();
+      if(this.target.dead != true)
+        this.calculateAngle();
     }
     this.vX += this.acc;
     this.vY += this.acc;
@@ -68,13 +69,25 @@
   }
   Rocket.prototype.was_hit_by = function(obj)
   {
-    if (obj instanceof Hacker)
+    if (obj instanceof Hacker ||
+        obj == "Bounds")
     {
-      debugger;
+      // for(var i = 0; i< arr_ent.length; i++)
+      // {
+      //   if(arr_ent[i] instanceof Hacker)
+      //   {
+      //     dist=Math.sqrt(Math.pow(this.x-arr_ent[i].x,2) + Math.pow(this.y-arr_ent[i].y,2));
+      //     if(dist < 30)
+      //     {
+      //       arr_ent[i].was_hit_by(this);
+      //     }
+      //   }
+      // }
       stage.removeChild(this);
       var t_ind = arr_ent.indexOf(this);
       arr_ent.splice(t_ind,1);
     }
+
   }
   window.Rocket = Rocket;
 }(window))

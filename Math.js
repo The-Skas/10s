@@ -35,3 +35,7 @@ Math.toNegAngle = function(n) {
   n %= 360;
   return n;
 }
+// Math.distance = function(n1,n2)
+// {
+//   dist=Math.sqrt(Math.pow(this.x-obj.x,2) + Math.pow(this.y-obj.y,2));
+// }

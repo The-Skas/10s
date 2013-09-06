@@ -99,8 +99,16 @@
     _this.computer.ticks++;
     if(_this.computer.ticks > _this.computer.max_ticks)
     {
+      if(_this.computer.cracked == false)
+      {
+        _this.computer.lastTime = g_time;
+      }
       _this.computer.cracked = true;
-      _this.computer.txt.text = "System Hacked."
+      _this.computer.txt.text = "System Hacked.\n RETURN KEY TO EXIT."
+    }
+    if(_this.computer.lockOut)
+    {
+      _this.computer.txt.text= "SECURITY BREACH: \n LOCKING COMPUTER."
     }
     var ind=_this.temp_arr.indexOf(_this.JackedIn);
     _this.temp_arr.splice(ind, 1);
@@ -263,9 +271,29 @@
         }
       }
     }
+    State.prototype.Game_TitleInit = function()
+    {
+      var g = new createjs.Graphics();
+      g.beginFill(createjs.Graphics.getRGB(0,0,0));
+      g.drawRect(0,0,500,500);
+      stage.addChild(new createjs.Shape(g));
+
+      var temp_txt = new createjs.Text("10.00", "36px Courier", "#76EE00");
+      temp_txt.text = "HIT ENTER TO START.";
+
+      temp_txt.y = canvas.height/2 - temp_txt.getMeasuredLineHeight();
+      temp_txt.x = canvas.width/2;
+      temp_txt.textAlign ="center";
+      stage.addChild(temp_txt);
+      gameState = State.prototype.Game_Title;
+    }
     State.prototype.Game_Title = function()
     {
-
+      if(arr_keys[arr_keys.length-1] == KEYCODE_ENTER)
+      {
+        levels[ind_lvl].reset();
+        createjs.Sound.play("main");
+      }
     }
     State.prototype.Level_End = function()
     {
