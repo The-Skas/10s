@@ -10,6 +10,7 @@ function initLevels()
         levels[0].hint = "Hey... Im you 10 seconds from now."
         Hacker.prototype.arrHackers = [];
         debugger;
+        //debug
     }
     levels[0].level = function()
     {
